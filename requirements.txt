@@ -1,0 +1,97 @@
+# ─────────────────────────────────────────
+# DATA INGESTION — zbieranie newsów
+# ─────────────────────────────────────────
+feedparser==6.0.11
+gnews==0.3.7
+httpx==0.27.0
+requests==2.31.0
+beautifulsoup4==4.12.3
+playwright==1.44.0
+trafilatura==1.12.2
+
+# ─────────────────────────────────────────
+# DANE FINANSOWE
+# ─────────────────────────────────────────
+yfinance
+openbb
+openbb-yfinance
+openbb-charting
+pandas
+numpy
+
+# ─────────────────────────────────────────
+# AI / LLM / NLP
+# ─────────────────────────────────────────
+langchain
+langchain-community
+langchain-openai
+openai
+anthropic
+sentence-transformers
+transformers
+torch
+
+# ─────────────────────────────────────────
+# SENTIMENT FINANSOWY
+# ─────────────────────────────────────────
+vaderSentiment
+# finbert — przez transformers (model: ProsusAI/finbert)
+
+# ─────────────────────────────────────────
+# WEKTOROWA BAZA WIEDZY (RAG)
+# ─────────────────────────────────────────
+chromadb
+faiss-cpu
+tiktoken==0.7.0
+
+# ─────────────────────────────────────────
+# PRZECHOWYWANIE DANYCH
+# ─────────────────────────────────────────
+psycopg2-binary
+redis
+sqlalchemy
+
+# ─────────────────────────────────────────
+# GENEROWANIE RAPORTÓW
+# ─────────────────────────────────────────
+jinja2
+markdown
+python-docx
+reportlab
+weasyprint
+plotly
+kaleido
+
+# ─────────────────────────────────────────
+# API / BACKEND
+# ─────────────────────────────────────────
+fastapi
+uvicorn
+pydantic
+
+# ─────────────────────────────────────────
+# AUTOMATYZACJA I HARMONOGRAM
+# ─────────────────────────────────────────
+APScheduler
+celery
+# ─────────────────────────────────────────
+# DOSTARCZANIE — Telegram / Email
+# ─────────────────────────────────────────
+python-telegram-bot
+sendgrid
+
+# ─────────────────────────────────────────
+# KAFKA (masz już w stacku)
+# ─────────────────────────────────────────
+confluent-kafka
+kafka-python
+
+# ─────────────────────────────────────────
+# NARZĘDZIA POMOCNICZE
+# ─────────────────────────────────────────
+python-dotenv
+loguru
+tenacity
+tqdm
+httpx[http2]
+lxml
