@@ -1,0 +1,2 @@
+class NewScrapper:
+    pass

@@ -1,0 +1,94 @@
+┌─────────────────────────────────────────────────────────────┐
+│                     WARSTWA ŹRÓDEŁ                          │
+│                                                             │
+│  RSS Feeds        Google News      Strony eksperckie        │
+│  (Bloomberg,      (gnews)          (trafilatura scraper)    │
+│   Reuters, FT)                                              │
+│       │                │                    │               │
+│  Dane rynkowe     Twitter/X API      PDF raporty            │
+│  (yfinance/openbb) (tweepy)         (pdfplumber)            │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  WARSTWA INGESTION                           │
+│                                                             │
+│         Apache Kafka (topic: raw_news)                      │
+│                                                             │
+│   Producer                          Consumer                │
+│   - feedparser (RSS)                - deduplikacja          │
+│   - gnews                           - filtrowanie języka    │
+r - playwright (JS pages)           - klasyfikacja tematu   │
+│   - trafilatura (clean text)        - priorytetyzacja       │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│               WARSTWA PRZECHOWYWANIA                        │
+│                                                             │
+│   PostgreSQL                    Redis                       │
+│   - artykuły (raw + processed)  - cache live feeds          │
+│   - metadane źródeł             - kolejka zadań             │
+│   - historia raportów           - deduplikacja hashes       │
+│                                                             │
+│   ChromaDB (embeddingi)                                     │
+│   - wektoryzacja artykułów      ← sentence-transformers     │
+│   - baza wiedzy RAG                                         │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  WARSTWA AI / ANALITYKI                     │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              LangChain Agent                        │   │
+│  │                                                     │   │
+│  │  Tool 1: RAG Search (ChromaDB)                      │   │
+│  │  Tool 2: Market Data (openbb/yfinance)              │   │
+│  │  Tool 3: Sentiment Analysis (FinBERT/VADER)         │   │
+│  │  Tool 4: Web Search (live queries)                  │   │
+│  │  Tool 5: PDF Parser (eksperci, raporty banków)      │   │
+│  └──────────────────────┬──────────────────────────────┘   │
+│                         │                                   │
+│                         ▼                                   │
+│           GPT-4o / Claude (LLM)                             │
+│           - synteza informacji                              │
+│           - generowanie analizy                             │
+│           - wnioski i prognozy                              │
+│           - tłumaczenie (PL/EN)                             │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│              WARSTWA GENEROWANIA RAPORTÓW                   │
+│                                                             │
+│   Jinja2 Templates                                          │
+│   ┌──────────────┬──────────────┬────────────────────────┐  │
+│   │ Daily Brief  │ Deep Dive    │ Alert Report           │  │
+│   │ (makro/rynki)│ (jeden temat)│ (nagłe zdarzenie)      │  │
+│   └──────┬───────┴──────┬───────┴────────┬───────────────┘  │
+│          │              │                │                   │
+│       Markdown        PDF (reportlab)  HTML (weasyprint)    │
+│          │              │                │                   │
+│       Wykresy Plotly dołączane do każdego raportu           │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│               WARSTWA AUTOMATYZACJI                         │
+│                                                             │
+│   APScheduler                    n8n Workflows              │
+│   - co 6h: Daily Brief           - trigger po keywords      │
+│   - co 24h: Deep Dive            - webhook FastAPI          │
+│   - real-time: Alert             - powiadomienia            │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                WARSTWA DOSTARCZANIA                         │
+│                                                             │
+│   Telegram Bot     Email (SendGrid)    FastAPI REST         │
+│   - alerty         - raporty PDF       - endpoint /report   │
+│   - daily brief    - subskrybenci      - endpoint /alert    │
+│   - /query cmd     - digest dzienny    - webhook n8n        │
+└─────────────────────────────────────────────────────────────┘

@@ -1,14 +1,14 @@
 # ─────────────────────────────────────────
 # DATA INGESTION — zbieranie newsów
 # ─────────────────────────────────────────
-feedparser==6.0.11
-gnews==0.3.7
-httpx==0.27.0
-requests==2.31.0
-beautifulsoup4==4.12.3
-playwright==1.44.0
-trafilatura==1.12.2
-
+feedparser
+gnews
+httpx
+requests
+beautifulsoup4
+playwright
+trafilatura
+requests
 # ─────────────────────────────────────────
 # DANE FINANSOWE
 # ─────────────────────────────────────────
@@ -95,3 +95,5 @@ tenacity
 tqdm
 httpx[http2]
 lxml
+
+
